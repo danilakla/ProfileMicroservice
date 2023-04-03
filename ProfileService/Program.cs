@@ -1,12 +1,17 @@
 using Autofac.Extensions.DependencyInjection;
 using EventBus.Abstructions;
+using Microsoft.EntityFrameworkCore;
+using ProfileService.Data;
 using ProfileService.Extensions;
 using UniversityApi.IntegrationEvents.Events;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 // Add services to the container.
-
+builder.Services.AddDbContext<ApplicationDbContext>(o =>
+{
+    o.UseSqlServer(builder.Configuration["AppSettings:MSS"]);
+});
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
