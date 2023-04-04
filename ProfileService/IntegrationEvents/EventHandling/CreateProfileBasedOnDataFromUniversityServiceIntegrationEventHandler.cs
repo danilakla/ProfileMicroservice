@@ -19,13 +19,13 @@ public class CreateProfileBasedOnDataFromUniversityServiceIntegrationEventHandle
     public async Task Handle(CreateProfileBaseOnUniverDataIntegrationEvent @event)
     {
         Profiles profile = new() {
-            Email = @event.Email,
-            LastName = @event.LastName,
-            Name = @event.Name,
+            Email = @event.Email??"empty",
+            LastName = @event.LastName ?? "empty",
+            Name = @event.Name ?? "empty",
             UserId = @event.ProfileId,
             BackgroundProfile = Encoding.UTF8.GetBytes(@event.BackPhoto),
             Photo = Encoding.UTF8.GetBytes(@event.Photo),
-            UniversityName = @event.University,
+            UniversityName = @event.University ?? "empty",
             
         };
         await _applicationDbContext.AddAsync(profile);
