@@ -25,6 +25,7 @@ public class CreateProfileBasedOnDataFromUniversityServiceIntegrationEventHandle
             UserId = @event.ProfileId,
             BackgroundProfile = Encoding.UTF8.GetBytes(@event.BackPhoto),
             Photo = Encoding.UTF8.GetBytes(@event.Photo),
+            Role=@event.Role,
             UniversityName = @event.University ?? "empty",
             
         };
