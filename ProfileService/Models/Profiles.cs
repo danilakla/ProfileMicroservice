@@ -19,8 +19,8 @@ public class Profiles
     public string UniversityName { get; set; }
     public  byte[] BackgroundProfile{ get; set; }
 
-    public IQueryable<Projects> Projects { get; set; }
-    public IQueryable<Skills>  Skills{ get; set; }
+    public List<Projects> Projects { get; set; }
+    public List<Skills>  Skills{ get; set; }
 
 
 }
