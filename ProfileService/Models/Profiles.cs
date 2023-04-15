@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ProfileService.Models;
 
 public class Profiles
 {
     [Key]
+    [JsonIgnore]
     public int ProfileId { get; set; }
 
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ProfileService.Data;
+using ProfileService.DTO;
 using ProfileService.Models;
 using System;
 
@@ -93,5 +94,13 @@ public class ProfilesService : IProfileService
             bytes=Convert.FromBase64String(sBase64String);
         }
         return bytes;
+    }
+
+    public async Task UpdateProfile(int profileId, string role, UpdateProfileDTO updateProfileDTO)
+    {
+
+        await ChangePhotoProfile(profileId, role, updateProfileDTO.Icon);
+        await ChangeBackgroundPhotoProfile(profileId, role, updateProfileDTO.Bg);
+
     }
 }

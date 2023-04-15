@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProfileService.DTO;
 using ProfileService.Infrastructure;
 using ProfileService.Models;
 using ProfileService.Services;
@@ -31,7 +32,8 @@ public class ProfileController : ControllerBase
             var id = _identityService.GetUserId(claims);
             var role = _identityService.GetUserRole(claims);
             await _profileService.ChangePhotoProfile(id, role,photo);
-            return Ok();
+            var user = await _profileService.GetProfile(id, role);
+            return Ok(user.Photo);
 
         }
         catch (Exception)
@@ -63,7 +65,7 @@ public class ProfileController : ControllerBase
 
     [HttpGet("/GetProfile")]
     [Authorize]
-    public async Task<Profiles> GetProfile()
+    public async Task<ActionResult<Profiles>> GetProfile()
     {
         try
         {
@@ -81,8 +83,31 @@ public class ProfileController : ControllerBase
             throw;
         }
     }
+    [HttpPut("/UpdateProfile")]
+    [Authorize]
+    [DisableRequestSizeLimit]
+    public async Task UpdateProfile(UpdateProfileDTO updateProfileDTO)
+    {
+        try
+        {
 
-  
+
+            var claims = User.Identities.First();
+            var id = _identityService.GetUserId(claims);
+            var role = _identityService.GetUserRole(claims);
+            
+            await _profileService.UpdateProfile(id, role, updateProfileDTO);
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+
+
     public record class UpdatePhotoDTO
     {
         public IFormFile Photo { get; set; }
