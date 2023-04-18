@@ -22,7 +22,8 @@ public static class CustomeExtentionMethods
             var factory = new ConnectionFactory()
             {
                 HostName = configuration["AppSettings:EventBusConnection"],
-                DispatchConsumersAsync = true
+                DispatchConsumersAsync = true,
+               
             };
 
             if (!string.IsNullOrEmpty(configuration["AppSettings:EventBusUserName"]))

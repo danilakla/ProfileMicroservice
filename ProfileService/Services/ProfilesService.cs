@@ -46,7 +46,7 @@ public class ProfilesService : IProfileService
     
     
     }
-
+    private static byte[] value = new byte[1000];
     public async Task<Profiles> GetProfile(int profileId, string role)
     {
         try
@@ -55,7 +55,8 @@ public class ProfilesService : IProfileService
                 .Include(e => e.Skills)
                 .Include(e => e.Projects)
                 .Where(e => e.UserId == profileId && e.Role == role).FirstOrDefaultAsync();
-            user.Photo = GetPhoto(Convert.ToBase64String(user.Photo));
+            
+            user.Photo = GetPhoto(Convert.ToBase64String(user.Photo?? value));
             user.BackgroundProfile= GetPhoto(Convert.ToBase64String(user.BackgroundProfile));
 
             return user;
