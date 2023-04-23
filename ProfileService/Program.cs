@@ -55,6 +55,8 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddIntegrationServices(builder.Configuration);
+builder.Services.AddGrpcServices(builder.Configuration);
+
 builder.Services.AddEventBus(builder.Configuration);
 var app = builder.Build();
 

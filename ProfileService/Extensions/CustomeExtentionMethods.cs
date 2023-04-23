@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EventBus;
 using EventBus.Abstructions;
+using ProfileService.Proto;
 using RabbitMQ.Client;
 using RabbitMqCustomLib;
 
@@ -8,10 +9,24 @@ namespace ProfileService.Extensions;
 
 public static class CustomeExtentionMethods
 {
+    public static IServiceCollection AddGrpcServices(this IServiceCollection services, IConfiguration configuration)
+    {
+
+        services.AddGrpcClient<Profile.ProfileClient>((services, options) =>
+        {
+            var universityApi = configuration["AppSettings:Grpc:ChatApi"];
+            options.Address = new Uri(universityApi);
+        });
+
+
+
+        return services;
+    }
+
     public static IServiceCollection AddIntegrationServices(this IServiceCollection services, IConfiguration configuration)
     {
 
-
+        
 
 
 

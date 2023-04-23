@@ -20,8 +20,7 @@ public class ProfileController : ControllerBase
         _profileService = profileService;
         _identityService = identityService;
     }
-
-
+ 
     [HttpPut("/UpdatePhotoProfile")]
     [Authorize]
     public async Task<IActionResult> UpdatePhotoProfile(IFormFile photo)

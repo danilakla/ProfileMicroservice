@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Google.Protobuf;
+using Microsoft.EntityFrameworkCore;
 using ProfileService.Data;
 using ProfileService.DTO;
 using ProfileService.Models;
+using ProfileService.Proto;
 using System;
 
 namespace ProfileService.Services;
@@ -11,21 +13,32 @@ public class ProfilesService : IProfileService
 
 
     private readonly ApplicationDbContext _applicationDbContext;
+    private readonly Profile.ProfileClient _profileClient;
 
-    public ProfilesService(ApplicationDbContext applicationDbContext)
+    public ProfilesService(ApplicationDbContext applicationDbContext, Profile.ProfileClient profileClient)
     {
         _applicationDbContext = applicationDbContext;
+        _profileClient = profileClient;
     }
 
 
 
     public async Task ChangeBackgroundPhotoProfile(int profileId, string role, IFormFile photo)
     {
-        var user = await _applicationDbContext.Profiles.Where(e => e.UserId == profileId && e.Role == role).FirstOrDefaultAsync();
-
+        try
+        {
+     var user = await _applicationDbContext.Profiles.Where(e => e.UserId == profileId && e.Role == role).FirstOrDefaultAsync();
+        
         var photoBytes = SavePhoto(photo);
         user.BackgroundProfile = photoBytes;
         _applicationDbContext.SaveChanges();
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+   
     }
 
     public async Task ChangePhotoProfile(int profileId, string role, IFormFile photo)
@@ -35,6 +48,8 @@ public class ProfilesService : IProfileService
             var user = await _applicationDbContext.Profiles.Where(e => e.UserId == profileId && e.Role == role).FirstOrDefaultAsync();
 
             var photoBytes =  SavePhoto(photo);
+            await _profileClient.UpdateIconAsync(new Icon() { Email = user.Email, Photo = ByteString.CopyFrom(photoBytes) });
+
             user.Photo = photoBytes;
             _applicationDbContext.SaveChanges();
         }
